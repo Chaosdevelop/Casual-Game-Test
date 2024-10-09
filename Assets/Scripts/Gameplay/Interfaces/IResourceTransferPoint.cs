@@ -22,11 +22,13 @@ namespace Game
 		/// </summary>
 		/// <param name="resourceBlock">The resource block to add.</param>
 		void AddBlock(ResourceBlock resourceBlock);
+
 		/// <summary>
 		/// Removes a resource block from the transfer point.
 		/// </summary>
 		/// <param name="resourceBlock">The resource block to remove.</param>
 		void RemoveBlock(ResourceBlock resourceBlock);
+
 		/// <summary>
 		/// Returns the destination transform for resource transfers.
 		/// </summary>

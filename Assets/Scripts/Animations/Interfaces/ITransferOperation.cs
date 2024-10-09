@@ -9,6 +9,11 @@ namespace Game.Animations
 	public interface ITransferOperation
 	{
 		/// <summary>
+		/// Indicates whether the transfer operation is complete.
+		/// </summary>
+		bool IsCompleted { get; }
+
+		/// <summary>
 		/// Sets up the transfer operation.
 		/// </summary>
 		/// <param name="source">A function returning the transform of the source of the transfer.</param>
@@ -25,11 +30,5 @@ namespace Game.Animations
 		/// </summary>
 		/// <param name="deltaTime">The time since the last frame.</param>
 		void Update(float deltaTime);
-
-
-		/// <summary>
-		/// Indicates whether the transfer operation is complete.
-		/// </summary>
-		bool IsCompleted { get; }
 	}
 }

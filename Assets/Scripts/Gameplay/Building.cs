@@ -14,6 +14,15 @@ namespace Game.Buildings
 	public class Building : MonoBehaviour, IResourceTransferPoint
 	{
 
+		/// <summary>
+		/// Reasons for production to stop.
+		/// </summary>
+		enum StopReason
+		{
+			NotEnoughResources,
+			FullOutput
+		}
+
 		[SerializeField]
 		private Transform _inputWarehousePoint;
 		[SerializeField]
@@ -48,21 +57,9 @@ namespace Game.Buildings
 		private bool IsOutputResourcesFull => _outputWarehouse.Quantity == _outputWarehouse.Capacity;
 
 
-		/// <summary>
-		/// Reasons for production to stop.
-		/// </summary>
-		enum StopReason
-		{
-			NotEnoughResources,
-			FullOutput
-		}
-
-
 		private void Start()
 		{
-
 			StartNewProcess();
-
 		}
 
 		/// <summary>
@@ -91,7 +88,9 @@ namespace Game.Buildings
 
 		}
 
-
+		/// <summary>
+		/// Called when the input resources change.
+		/// </summary>
 		private void OnInputResourcesChanged()
 		{
 			if (!IsOutputResourcesFull && _resourceProcessing.IsStopped)
@@ -100,6 +99,9 @@ namespace Game.Buildings
 			}
 		}
 
+		/// <summary>
+		/// Called when the output resources change.
+		/// </summary>
 		private void OnOutputResourcesChanged()
 		{
 			if (!IsOutputResourcesFull && _resourceProcessing.IsStopped)
@@ -119,13 +121,18 @@ namespace Game.Buildings
 			}
 		}
 
-
+		/// <summary>
+		/// Starts a new resource processing cycle.
+		/// </summary>
 		private void StartNewProcess()
 		{
 			_requestedResources = new List<ResourceType>(_resourceProcessing.GetRequired());
 			RequestRequiredResources();
 		}
 
+		/// <summary>
+		/// Handles the completion of resource production.
+		/// </summary>
 		private void FinishProduction()
 		{
 			_producedResources = new List<ResourceType>(_resourceProcessing.GetResult());
@@ -140,7 +147,6 @@ namespace Game.Buildings
 			SendProduction();
 		}
 
-
 		private void Update()
 		{
 			_resourceProcessing.UpdateProcessing(Time.deltaTime);
@@ -152,7 +158,6 @@ namespace Game.Buildings
 					_transferOperations.RemoveAt(i);
 			}
 		}
-
 
 		/// <inheritdoc/>
 		public ITransferOperation TransferTo(IResourceTransferPoint otherPoint, ResourceType resourceValue)
@@ -191,7 +196,9 @@ namespace Game.Buildings
 			_outputBlocks.Remove(resourceBlock);
 		}
 
-
+		/// <summary>
+		/// Requests the required resources from the input warehouse.
+		/// </summary>
 		private void RequestRequiredResources()
 		{
 			if (_requestedResources.Count > 0)
@@ -214,34 +221,36 @@ namespace Game.Buildings
 			}
 		}
 
+		/// <summary>
+		/// Starts the production process.
+		/// </summary>
 		private void StartProduction()
 		{
 			_inputBlocks.Clear();
 			_resourceProcessing.StartProcessing();
 		}
 
-
+		/// <summary>
+		/// Sends the produced resources to the output warehouse.
+		/// </summary>
 		private void SendProduction()
 		{
-			if (_producedResources.Count > 0)
+			if (_producedResources.Count == 0) return;
+
+			var firstResource = _producedResources.First();
+
+			if (_outputWarehouse.CanReceive(firstResource))
 			{
-				var firstResource = _producedResources.First();
-
-				if (_outputWarehouse.CanReceive(firstResource))
+				_transferOperations.Add(TransferTo(_outputWarehouse, firstResource));
+				if (_resourceProcessing.IsStopped && IsRequiredResourcesEnough)
 				{
-					_transferOperations.Add(TransferTo(_outputWarehouse, firstResource));
-					if (_resourceProcessing.IsStopped && IsRequiredResourcesEnough)
-					{
-						_resourceProcessing.ResumeProcessing();
-					}
+					_resourceProcessing.ResumeProcessing();
 				}
-				else
-				{
-					_resourceProcessing.StopProcessing();
-					_log.Log($"Production stopped: {name} reason: {StopReason.FullOutput}");
-				}
-
-
+			}
+			else
+			{
+				_resourceProcessing.StopProcessing();
+				_log.Log($"Production stopped: {name} reason: {StopReason.FullOutput}");
 			}
 
 		}
@@ -252,7 +261,5 @@ namespace Game.Buildings
 		{
 			return _inputResourcePoint;
 		}
-
-
 	}
 }

@@ -13,6 +13,12 @@ namespace Game.Resources
 
 		[SerializeField]
 		Renderer _renderer;
+		[SerializeField]
+		Color _oreColor;
+		[SerializeField]
+		Color _ingotColor;
+		[SerializeField]
+		Color _alloyColor;
 
 		public ResourceType Resource { get; private set; }
 
@@ -33,13 +39,13 @@ namespace Game.Resources
 			switch (resourceType)
 			{
 				case ResourceType.Ore:
-					_renderer.material.color = Color.black;
+					_renderer.material.color = _oreColor;
 					break;
 				case ResourceType.Ingot:
-					_renderer.material.color = Color.gray;
+					_renderer.material.color = _ingotColor;
 					break;
 				case ResourceType.Alloy:
-					_renderer.material.color = Color.yellow;
+					_renderer.material.color = _alloyColor;
 					break;
 			}
 			name = $"ResourceBlock {resourceType}";

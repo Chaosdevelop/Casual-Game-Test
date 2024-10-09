@@ -129,3 +129,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5356324031850321422}
+  _oreColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
+  _ingotColor: {r: 0.6886792, g: 0.36058205, b: 0.405282, a: 1}
+  _alloyColor: {r: 0.5935386, g: 0.735849, b: 0.71993434, a: 1}

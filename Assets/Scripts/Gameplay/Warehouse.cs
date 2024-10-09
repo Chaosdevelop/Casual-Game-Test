@@ -24,11 +24,9 @@ namespace Game.Buildings
 
 		public WarehouseType WarehouseType { get; private set; }
 
-
 		private HashSet<ResourceType> _allowedResources;
 		private List<ResourceBlock> _resourceBlocks;
 		private Transform[] _subcontainers;
-
 
 		public event Action OnResourcesChanged;
 
@@ -63,14 +61,11 @@ namespace Game.Buildings
 			return freeSpace > 0 && _allowedResources.Contains(resourceValue);
 		}
 
-
-
 		/// <inheritdoc/>
 		public bool Contains(ResourceType resourceValue)
 		{
 			return _resourceBlocks.Any(block => block.Resource == resourceValue);
 		}
-
 
 		/// <inheritdoc/>
 		public ITransferOperation TryTransferTo(IResourceStorage otherStorage)
@@ -85,7 +80,6 @@ namespace Game.Buildings
 
 			return null;
 		}
-
 
 		/// <inheritdoc/>
 		public ITransferOperation TransferTo(IResourceTransferPoint otherPoint, ResourceType resourceValue)
@@ -105,14 +99,12 @@ namespace Game.Buildings
 			return transfer;
 		}
 
-
 		/// <inheritdoc/>
 		public void AddBlock(ResourceBlock resourceBlock)
 		{
 			_resourceBlocks.Add(resourceBlock);
 			OnResourcesChanged?.Invoke();
 		}
-
 
 		/// <inheritdoc/>
 		public void RemoveBlock(ResourceBlock resourceBlock)

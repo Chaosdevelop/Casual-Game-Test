@@ -26,8 +26,6 @@ namespace Game.Player
 
 		private ITransferOperation _transferOperation;
 
-
-
 		/// <summary>
 		/// Initializes the inventory.
 		/// </summary>
@@ -36,9 +34,6 @@ namespace Game.Player
 			_resourceBlocks = new List<ResourceBlock>(Capacity);
 			CreateSubcontainers();
 		}
-
-
-
 
 		private void Update()
 		{
@@ -53,14 +48,12 @@ namespace Game.Player
 			}
 		}
 
-
 		/// <inheritdoc/>
 		public bool CanReceive(ResourceType resourceValue)
 		{
 			int freeSpace = Capacity - Quantity;
 			return freeSpace > 0;
 		}
-
 
 		private void CreateSubcontainers()
 		{
@@ -74,17 +67,14 @@ namespace Game.Player
 			}
 		}
 
-
 		/// <inheritdoc/>
 		public bool Contains(ResourceType resourceValue)
 		{
 			return _resourceBlocks.Any(block => block.Resource == resourceValue);
 		}
 
-
 		/// <inheritdoc/>
 		public event Action OnResourcesChanged;
-
 
 		/// <inheritdoc/>
 		public ITransferOperation TransferTo(IResourceTransferPoint otherPoint, ResourceType resourceValue)
@@ -97,7 +87,6 @@ namespace Game.Player
 				() => otherPoint.AddBlock(block));
 			return transfer;
 		}
-
 
 		/// <inheritdoc/>
 		public void AddBlock(ResourceBlock resourceBlock)
@@ -115,7 +104,6 @@ namespace Game.Player
 		}
 
 
-
 		/// <inheritdoc/>
 		public ITransferOperation TryTransferTo(IResourceStorage otherStorage)
 		{
@@ -128,7 +116,6 @@ namespace Game.Player
 
 			return null;
 		}
-
 
 		/// <summary>
 		/// Tries to transfer the first allowed resource to the given warehouse.
@@ -147,9 +134,6 @@ namespace Game.Player
 				_transferOperation = warehouse.TryTransferTo(this);
 			}
 		}
-
-
-
 
 		/// <inheritdoc/>
 		public Transform GetDestination()

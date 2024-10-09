@@ -15,12 +15,15 @@ namespace Game
 		/// </summary>
 		int Capacity { get; }
 
-
 		/// <summary>
 		/// Gets the current quantity of resources in the storage.
 		/// </summary>
 		int Quantity { get; }
 
+		/// <summary>
+		/// Event triggered when the stored resources change.
+		/// </summary>
+		event Action OnResourcesChanged;
 
 		/// <summary>
 		/// Returns true if the storage can receive the given resource.
@@ -35,14 +38,6 @@ namespace Game
 		/// <param name="resourceValue">The type of resource to check.</param>
 		/// <returns>True if the storage contains the resource, false otherwise.</returns>
 		bool Contains(ResourceType resourceValue);
-
-
-
-		/// <summary>
-		/// Event triggered when the stored resources change.
-		/// </summary>
-		event Action OnResourcesChanged;
-
 
 		/// <summary>
 		/// Attempts to transfer resources to another storage.
